@@ -1,0 +1,116 @@
+<h2>Reactive Enrollment Form</h2>
+
+<form
+  [formGroup]="enrollForm"
+  (ngSubmit)="onSubmit()">
+
+  <label>Name</label>
+  <br>
+
+  <input
+    type="text"
+    formControlName="studentName">
+
+  <br><br>
+
+  <label>Email</label>
+  <br>
+
+  <input
+    type="email"
+    formControlName="studentEmail">
+
+  <br>
+
+  @if(enrollForm.get('studentEmail')?.errors?.['emailTaken']){
+
+    <span>Email already taken</span>
+
+  }
+
+  <br><br>
+
+  <label>Course ID</label>
+  <br>
+
+  <input
+    type="text"
+    formControlName="courseId">
+
+  <br>
+
+  @if(enrollForm.get('courseId')?.errors?.['noCourseCode']){
+
+    <span>
+      Course code starting with XX is not allowed.
+    </span>
+
+  }
+
+  <br><br>
+
+  <label>Semester</label>
+  <br>
+
+  <select formControlName="preferredSemester">
+
+    <option value="Odd">Odd</option>
+    <option value="Even">Even</option>
+
+  </select>
+
+  <br><br>
+
+  <input
+    type="checkbox"
+    formControlName="agreeToTerms">
+
+  I Agree to Terms
+
+  <br><br>
+
+  <h3>Additional Courses</h3>
+
+  <button
+    type="button"
+    (click)="addCourse()">
+
+    Add Another Course
+
+  </button>
+
+  <br><br>
+
+  <div formArrayName="additionalCourses">
+
+    @for(ctrl of additionalCourses.controls; track $index){
+
+      <div>
+
+        <input [formControl]="$any(ctrl)">
+
+        <button
+          type="button"
+          (click)="removeCourse($index)">
+
+          Remove
+
+        </button>
+
+      </div>
+
+    }
+
+  </div>
+
+  <br>
+
+  <button
+    type="submit"
+    [disabled]="enrollForm.invalid">
+
+    Submit
+
+  </button>
+
+</form>
